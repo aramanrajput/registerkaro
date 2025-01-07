@@ -1,17 +1,14 @@
-import { Pool } from 'pg';
 
-const pool = new Pool({
-  user: process.env.DB_USER,            
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,      
-  password: process.env.DB_PASSWORD,      
-  port: 5432
-});
+const process = require('process');
+import { neon } from '@neondatabase/serverless';
 
-export const query = async (text: string, params?: any[]) => {
+const sql = neon(process.env.DATABASE_URL);
+
+
+export const query = async (text: string) => {
   try {
-    const res = await pool.query(text, params);
-    return res.rows;
+    const res = await sql(text);
+    return res
   } catch (err) {
     console.error('Database query error:', err);
     throw err;

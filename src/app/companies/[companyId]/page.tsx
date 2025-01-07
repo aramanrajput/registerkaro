@@ -17,13 +17,13 @@ export default async function CompanyDetails({ params }: { params: { companyId: 
 
   // Fetch company details and its directors from the database
   const companyData = await query(
-    'SELECT * FROM companies WHERE id = $1',
-    [companyId]
+    `SELECT * FROM companies WHERE id = ${companyId} `,
+  
   );
 
   const directorsData = await query(
-    'SELECT name FROM directors WHERE company_id = $1',
-    [companyId]
+    `SELECT name FROM directors WHERE company_id = ${companyId}`,
+
   );
 
   if (companyData.length === 0) {
