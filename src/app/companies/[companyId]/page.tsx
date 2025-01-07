@@ -12,18 +12,20 @@ interface CompanyDetail {
   directors: Director[];
 }
 
-export default async function CompanyDetails({ params }: { params: { companyId: string } }) {
+interface Params {
+  companyId: string;
+}
+
+export default async function CompanyDetails({ params }: { params: Params }) {
   const companyId = parseInt(params.companyId);
 
   // Fetch company details and its directors from the database
   const companyData = await query(
-    `SELECT * FROM companies WHERE id = ${companyId} `,
-  
+    `SELECT * FROM companies WHERE id = $1`, [companyId]
   );
 
   const directorsData = await query(
-    `SELECT name FROM directors WHERE company_id = ${companyId}`,
-
+    `SELECT name FROM directors WHERE company_id = $1`, [companyId]
   );
 
   if (companyData.length === 0) {
@@ -35,7 +37,7 @@ export default async function CompanyDetails({ params }: { params: { companyId: 
   const companyDetail: CompanyDetail = {
     name: company.name,
     description: company.description,
-    directors: directorsData,
+    directors: directorsData.map((director: any) => ({ name: director.name })),
   };
 
   return (
