@@ -1,6 +1,6 @@
 import { query } from '../../../lib/db';
 import { notFound } from 'next/navigation';
-import { Typography, Paper, List, ListItem, Divider } from '@mui/material';
+import { Typography, Paper, List, ListItem } from '@mui/material';
 
 interface Director {
   name: string;
