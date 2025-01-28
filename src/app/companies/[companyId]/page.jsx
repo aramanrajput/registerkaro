@@ -2,25 +2,12 @@ import { query } from '../../../lib/db';
 import { notFound } from 'next/navigation';
 import { Typography, Paper, List, ListItem } from '@mui/material';
 
-interface Director {
-  name: string;
-}
 
-interface CompanyDetail {
-  name: string;
-  description: string;
-  directors: Director[];
-}
 
-interface Params {
-  companyId: string;
-}
+export default async function CompanyDetails({ params }) {
+  const {companyId} = await params
 
-export default async function CompanyDetails({ params }: { params: { companyId: string } }) {
-
-  const { companyId } = await params;
-
-  if (isNaN(Number(companyId))) {
+  if (isNaN(companyId)) {
     notFound();
   }
 
@@ -40,10 +27,10 @@ export default async function CompanyDetails({ params }: { params: { companyId: 
   }
   const company = companyData[0];
 
-  const companyDetail: CompanyDetail = {
+  const companyDetail = {
     name: company.name,
     description: company.description,
-    directors: directorsData.map((director: any) => ({ name: director.name })),
+    directors: directorsData.map((director) => ({ name: director.name })),
   };
 
   return (
