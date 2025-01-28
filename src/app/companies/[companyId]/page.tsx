@@ -16,22 +16,28 @@ interface Params {
   companyId: string;
 }
 
-export default async function CompanyDetails({ params }: { params: Params }) {
-  const companyId = parseInt(params.companyId);
+export default async function CompanyDetails({ params }: { params: { companyId: string } }) {
 
-  // Fetch company details and its directors from the database
-  const companyData = await query(
-    `SELECT * FROM companies WHERE id = $1`, [companyId]
-  );
+  const { companyId } = await params;
 
-  const directorsData = await query(
-    `SELECT name FROM directors WHERE company_id = $1`, [companyId]
-  );
-
-  if (companyData.length === 0) {
+  if (isNaN(Number(companyId))) {
     notFound();
   }
 
+  // Fetch company details and its directors from the database
+  const companyData = await query(
+    `SELECT * FROM companies WHERE id = $1`,
+    [companyId]
+  );
+
+  const directorsData = await query(
+    `SELECT name FROM directors WHERE company_id = $1`,
+    [companyId]
+  );
+
+  if (!companyData || companyData.length === 0) {
+    notFound();
+  }
   const company = companyData[0];
 
   const companyDetail: CompanyDetail = {

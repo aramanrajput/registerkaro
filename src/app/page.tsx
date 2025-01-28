@@ -17,7 +17,7 @@ export default async function Home() {
       <Paper elevation={3} style={{ padding: '20px' }}>
         <Grid2 container spacing={2} >
           {companies.map((company: Company) => (
-            <Grid2 item xs={12} sm={6} md={4} key={company.id}>
+            <Grid2  xs={12} sm={6} md={4} key={company.id}>
               <List>
                 <ListItem style={{ paddingLeft: 0 }}>
                   <Link href={`/companies/${company.id}`}>
